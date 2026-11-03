@@ -336,6 +336,7 @@ class ReconcilerTests(unittest.TestCase):
         for field, value in (
             ("version", 2),
             ("repository", "other/repo"),
+            ("repository", None),
             ("status", []),
             ("passed", True),
             ("total", 0),

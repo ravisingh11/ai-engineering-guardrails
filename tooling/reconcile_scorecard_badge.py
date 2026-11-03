@@ -184,7 +184,8 @@ def validate_published_scorecard(
         raise ValueError("published scorecard version must be 1")
     if (
         document.get("operation") != "change"
-        or document.get("repository") not in {repository, previous_repository}
+        or (document.get("repository") != repository and
+            (previous_repository is None or document.get("repository") != previous_repository))
     ):
         raise ValueError("published scorecard identity does not match")
     status = document.get("status")
