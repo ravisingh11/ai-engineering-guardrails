@@ -322,6 +322,17 @@ class ReconcilerTests(unittest.TestCase):
         self.assertEqual(
             MODULE.validate_published_scorecard(document, REPOSITORY), document
         )
+        new_name = "ravisingh11/ai-engineering-guardrails"
+        old_name = "ravisingh11/ai-software-toolkit"
+        old_document = {**document, "repository": old_name}
+        alias = MODULE.previous_published_repository(new_name, {"id": 1348591078})
+        self.assertEqual(alias, old_name)
+        self.assertEqual(MODULE.validate_published_scorecard(old_document, new_name, previous_repository=alias), old_document)
+        self.assertEqual(MODULE.published_tuple(old_document), MODULE.published_tuple(document))
+        for repository, record in ((new_name, {"id": 1}), ("other/repo", {"id": 1348591078}), (new_name, {})):
+            self.assertIsNone(MODULE.previous_published_repository(repository, record))
+            with self.assertRaises(ValueError):
+                MODULE.validate_published_scorecard(old_document, repository)
         for field, value in (
             ("version", 2),
             ("repository", "other/repo"),
