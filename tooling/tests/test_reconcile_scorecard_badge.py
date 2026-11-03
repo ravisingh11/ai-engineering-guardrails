@@ -347,6 +347,10 @@ class ReconcilerTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 MODULE.validate_published_scorecard(invalid, REPOSITORY)
 
+        missing_repository = {key: value for key, value in document.items() if key != "repository"}
+        with self.assertRaises(ValueError):
+            MODULE.validate_published_scorecard(missing_repository, REPOSITORY)
+
         for invalid in (
             {**document, "passed": 4},
             {**document, "enforced": []},
